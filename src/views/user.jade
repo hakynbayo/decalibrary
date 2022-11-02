@@ -1,0 +1,65 @@
+extends layout
+
+block content
+  if(user)  
+    h6 #{message}
+    h1= user.author 
+    p Welcome to #{user.author} profile page
+  .container 
+    .row 
+      .col 
+        
+        if(user)
+          div 
+            h6 Age: #{user.age} | Identification No: #{user.id} | Residence: #{user.address}
+            h6 Joined: #{user.dateRegistered}
+          
+          if (user.books.length > 0)
+            div 
+              h5 Books 
+              each book in user.books 
+                p title #{book.name} | Identification No #{book.id}
+                form(action="/users/delete_book", method="POST")
+                  .form-group 
+                    input(type="hidden", name="bookid" value="#{book.id}")
+                    input(type="hidden", name="userid" value="#{user.id}")
+                    button(class="btn btn-lg btn-danger" type="submit") Delete   
+
+          .row 
+            div(class="col-sm-6")
+            div(class="col-sm-6")
+              button(class="btn btn-lg btn-primary", data-toggle="collapse", data-target="#add_book_div") Add Book to Author 
+              button(class="btn btn-lg btn-success", data-toggle="collapse", data-target="#update_user_div") Update Author 
+              
+            div(class="col-sm-6")
+              div(class="collapse", id="add_book_div")
+                form(action="/users/add_book", method="POST")
+                  div(class="form-group")
+                    label(for="name") Book Name
+                    input(name="name", id="name", class="form-control", type="text", placeholder="Book name", required="required")
+                    label(for="isdn") ISDN #{user.id}
+                    input(name="isdn", id="isdn", class="form-control", type="tel", placeholder="Book ISDN", required="required")
+                    input(name="userid", type="hidden", value="#{user.id}", required="required")    
+                  div
+                    button(type="submit" class="btn btn-primary btn-block") Add Book             
+        
+
+
+           
+            div(class="col-sm-6") 
+              div(class="collapse", id="update_user_div")
+                form(action="/users/update_user", method="POST")
+                  div(class="form-group")
+                    label(for="author") Author 
+                    input(name="author", id="author", class="form-control", type="text", value="#{user.author}", required="required")
+                    label(for="address") Address
+                    input(name="address", id="address", class="form-control", type="text", value="#{user.address}" , required="required")
+                    label(for="age") Age
+                    input(name="age", id="age", class="form-control", type="tel",  value="#{user.age}", required="required")
+                    input(name="dateRegistered", class="form-control", type="hidden", value="#{user.dateRegistered}", required="required")    
+                    input(name="userid", class="form-control", type="hidden", value="#{user.id}", required="required")    
+                  div
+                    button(type="submit" class="btn btn-primary btn-block") Update              
+        
+
+    

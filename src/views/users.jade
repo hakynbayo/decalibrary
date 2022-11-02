@@ -1,0 +1,34 @@
+extends layout
+
+block content
+  h1 Authors Dock 
+  p Welcome to Authors  
+
+  .container 
+    .row 
+      if(users.length > 0)
+        each user in users  
+          div(class="col-sm-3")
+            h6  
+              a(href="/users/#{user.id}") #{user.author} 
+              a(href="/users/delete_user/#{user.id}", class="btn btn-danger btn-sm") delete 
+      else
+        .col 
+          h3 NO Authors Here Yet 
+
+      br
+      button(class="btn btn-lg btn-success", data-toggle="collapse", data-target="#add_user_div") Add Author 
+      div(class="collapse", id="add_user_div")
+        form(action="/users/", method="POST")
+          div(class="form-group")
+            label(for="author") Author 
+            input(name="author", id="author", class="form-control", type="text", placeholder="Author Name", required="required")
+            label(for="address") Address
+            input(name="address", id="address", class="form-control", type="text", placeholder="Silicon Valley" , required="required")
+            label(for="age") Age
+            input(name="age", id="age", class="form-control", type="tel",  placeholder="16", required="required")
+          div
+            button(type="submit" class="btn btn-primary btn-block") Add Author              
+
+
+
